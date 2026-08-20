@@ -1,0 +1,74 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Downloaded datasets
+data/
+
+# Generated training outputs and artifacts
+outputs/
+runs/
+results/
+*.ckpt
+*.pth
+*.pt
+*.safetensors
+*.npy
+*.npz
+*.mp4
+
+# Checkpoints written by --ckpt-dir
+ckpt/
+checkpoints/
+
+# Plots written by scripts/plot_results.py (which defaults to the CWD).
+# Figures committed on purpose live under docs/ or assets/.
+*.png
+!docs/**/*.png
+!assets/**/*.png
+
+# Experiment tracking / logs from cluster runs
+wandb/
+lightning_logs/
+events.out.tfevents.*
+slurm-*.out
+nohup.out
+*.log
+
+# torch.compile / inductor caches and DDP crash dumps
+torchinductor_*/
+.torchinductor/
+core.[0-9]*
+
+# Superseded pre-rewrite code, kept locally for reference only.
+# These are the notebooks and script published at commit a170f3a; they remain in
+# git history and can be recovered with:
+#   git show a170f3a:cifar10.py
+# Their results are NOT comparable to the current code, which fixes a double
+# softmax, the ImageNet-stem ResNet on 32x32 inputs, and missing normalisation.
+legacy/
+
+# Local backup archives
+*.tar.gz
+
+# Notebooks
+.ipynb_checkpoints/
+
+# OS / editor cruft
+.DS_Store
+.idea/
+.vscode/

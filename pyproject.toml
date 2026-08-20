@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "redundancy-reduction"
+version = "0.1.0"
+description = "Reducing redundancy in neural network training via loss-based example selection and low-rank gradient approximation."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [{ name = "Theodoris V. Mallios" }]
+keywords = ["deep-learning", "training-efficiency", "data-selection", "gradients"]
+dependencies = [
+    "torch>=2.0",
+    "torchvision>=0.15",
+    "numpy",
+    "matplotlib",
+    "pandas",
+    "tqdm",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+include = ["redundancy*"]
