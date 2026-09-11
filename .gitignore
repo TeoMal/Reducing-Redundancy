@@ -30,7 +30,6 @@ data/
 # Generated training outputs and artifacts
 outputs/
 runs/
-results/
 *.ckpt
 *.pth
 *.pt
