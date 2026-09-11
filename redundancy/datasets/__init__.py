@@ -65,10 +65,12 @@ def default_model(name: str) -> str:
     return _get(name).DEFAULT_MODEL
 
 
-def build_model(dataset: str, model: str | None = None) -> nn.Module:
+def build_model(dataset: str, model: str | None = None, **kwargs) -> nn.Module:
     """Instantiate an architecture registered for ``dataset``.
 
-    ``model=None`` uses the dataset's default architecture.
+    ``model=None`` uses the dataset's default architecture. Extra keyword
+    arguments (e.g. ``dropout``) are forwarded to the constructor; passing one
+    an architecture does not accept is a ``TypeError`` from that constructor.
     """
     module = _get(dataset)
     model = model or module.DEFAULT_MODEL
@@ -77,7 +79,7 @@ def build_model(dataset: str, model: str | None = None) -> nn.Module:
             f"Model '{model}' is not registered for dataset '{dataset}'. "
             f"Available: {available_models(dataset)}"
         )
-    return module.MODELS[model](num_classes=module.META.num_classes)
+    return module.MODELS[model](num_classes=module.META.num_classes, **kwargs)
 
 
 __all__ = [

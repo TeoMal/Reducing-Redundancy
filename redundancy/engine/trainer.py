@@ -80,6 +80,7 @@ class TrainerConfig:
     warmup_epochs: float = 0.0      # linear LR warmup; ViTs need this
     ce_tail_epochs: int = 0         # use plain CE for the final N epochs
     grad_clip: Optional[float] = None
+    label_smoothing: float = 0.0    # 0 = plain cross-entropy
     device: str = "cpu"
     verbose: bool = True
 
@@ -163,7 +164,11 @@ class Trainer:
         self.selector = selector
         self.low_rank = low_rank
         self.logger = logger
-        self.criterion = nn.CrossEntropyLoss(reduction="none")
+        # reduction="none" is what makes per-example selection possible; label
+        # smoothing composes with it unchanged (it only reshapes the target).
+        self.criterion = nn.CrossEntropyLoss(
+            reduction="none", label_smoothing=config.label_smoothing
+        )
         self.history: List[EpochStats] = []
         self.start_epoch = 0
 

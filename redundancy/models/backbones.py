@@ -191,21 +191,21 @@ def vision_transformer(
     return model
 
 
-def vit_ti_16(num_classes: int, num_channels: int = 3, image_size: int = 224):
+def vit_ti_16(num_classes: int, num_channels: int = 3, image_size: int = 224, **kwargs):
     """ViT-Tiny/16 (~5.7M params) -- the cheap variant for pipeline shakedowns."""
-    return vision_transformer(num_classes, num_channels, image_size, "ti", 16)
+    return vision_transformer(num_classes, num_channels, image_size, "ti", 16, **kwargs)
 
 
-def vit_s_16(num_classes: int, num_channels: int = 3, image_size: int = 224):
+def vit_s_16(num_classes: int, num_channels: int = 3, image_size: int = 224, **kwargs):
     """ViT-Small/16 (~22M params)."""
-    return vision_transformer(num_classes, num_channels, image_size, "s", 16)
+    return vision_transformer(num_classes, num_channels, image_size, "s", 16, **kwargs)
 
 
-def vit_b_16(num_classes: int, num_channels: int = 3, image_size: int = 224):
+def vit_b_16(num_classes: int, num_channels: int = 3, image_size: int = 224, **kwargs):
     """ViT-Base/16 (~86M params) -- the standard ImageNet reference point."""
-    return vision_transformer(num_classes, num_channels, image_size, "b", 16)
+    return vision_transformer(num_classes, num_channels, image_size, "b", 16, **kwargs)
 
 
-def vit_l_16(num_classes: int, num_channels: int = 3, image_size: int = 224):
+def vit_l_16(num_classes: int, num_channels: int = 3, image_size: int = 224, **kwargs):
     """ViT-Large/16 (~304M params)."""
-    return vision_transformer(num_classes, num_channels, image_size, "l", 16)
+    return vision_transformer(num_classes, num_channels, image_size, "l", 16, **kwargs)

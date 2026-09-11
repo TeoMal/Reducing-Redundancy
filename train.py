@@ -74,6 +74,10 @@ def parse_args() -> argparse.Namespace:
                            "(0 = evaluate on the test set)")
     data.add_argument("--no-download", action="store_true",
                       help="do not download the dataset if it is missing")
+    data.add_argument("--dropout", type=float, default=0.0,
+                      help="dropout inside the transformer blocks (ViT only)")
+    data.add_argument("--attention-dropout", type=float, default=0.0,
+                      help="attention dropout (ViT only)")
     data.add_argument("--drop-last", action="store_true",
                       help="drop the last incomplete training batch (recommended "
                            "at scale: keeps per-batch selection statistics stable)")
@@ -113,6 +117,9 @@ def parse_args() -> argparse.Namespace:
     optim.add_argument("--warmup-epochs", type=float, default=0.0,
                        help="linear LR warmup; ViTs generally need 5+")
     optim.add_argument("--grad-clip", type=float, default=None)
+    optim.add_argument("--label-smoothing", type=float, default=0.0,
+                       help="cross-entropy label smoothing (0 = off); ViTs on "
+                            "ImageNet conventionally use 0.1")
     optim.add_argument("--accum-steps", type=int, default=1,
                        help="micro-batches per optimiser step (raises the effective "
                             "batch without raising memory)")
@@ -187,7 +194,14 @@ def main() -> None:
         )
         eval_loader = val_loader if val_loader is not None else test_loader
 
-        model = build_model(args.dataset, args.model)
+        # Only forward the regularisation knobs when they are actually set, so
+        # architectures that do not take them (ResNet, VGG) keep working.
+        model_kwargs = {}
+        if args.dropout:
+            model_kwargs["dropout"] = args.dropout
+        if args.attention_dropout:
+            model_kwargs["attention_dropout"] = args.attention_dropout
+        model = build_model(args.dataset, args.model, **model_kwargs)
         selector = build_selector(args.method, k=args.k, fraction=args.fraction, c=args.c)
 
         low_rank = None
@@ -213,6 +227,7 @@ def main() -> None:
             warmup_epochs=args.warmup_epochs,
             ce_tail_epochs=args.ce_tail_epochs,
             grad_clip=args.grad_clip,
+            label_smoothing=args.label_smoothing,
             device=device,
             verbose=not args.quiet,
             amp=args.amp,

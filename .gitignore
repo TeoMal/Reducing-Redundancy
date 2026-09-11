@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *.egg-info/
 .eggs/
+.env
 build/
 dist/
 .pytest_cache/
@@ -11,10 +12,17 @@ dist/
 .coverage
 htmlcov/
 
+
+*.sbatch
 # Virtual environments
 .venv/
 venv/
 env/
+
+# Reference documentation, figures and archived per-epoch logs. Local only.
+# Nothing under here can be un-ignored piecemeal: git never descends into an
+# excluded directory, so a `!docs/...` negation below would not fire.
+docs/
 
 # Downloaded datasets
 data/
@@ -36,9 +44,9 @@ ckpt/
 checkpoints/
 
 # Plots written by scripts/plot_results.py (which defaults to the CWD).
-# Figures committed on purpose live under docs/ or assets/.
+# Figures committed on purpose live under assets/; docs/ is ignored wholesale
+# above, so a negation for it would have no effect.
 *.png
-!docs/**/*.png
 !assets/**/*.png
 
 # Experiment tracking / logs from cluster runs
@@ -48,6 +56,8 @@ events.out.tfevents.*
 slurm-*.out
 nohup.out
 *.log
+# Scheduler stdout from the sbatch scripts (absolute cluster paths, not portable)
+logs/
 
 # torch.compile / inductor caches and DDP crash dumps
 torchinductor_*/
