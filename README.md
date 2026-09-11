@@ -185,19 +185,39 @@ dataset is a self-contained addition (see [Adding a dataset](#adding-a-dataset))
 
 ## Installation
 
+Requires Python >= 3.9 and PyTorch >= 2.0. A GPU is optional but recommended.
+
 ```bash
-git clone <your-fork-url>
-cd redundancy-reduction
-python -m venv .venv && source .venv/bin/activate
-pip install -e .          # or: pip install -r requirements.txt
+git clone https://github.com/TeoMal/Reducing-Redundancy.git
+cd Reducing-Redundancy
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -e .
 ```
 
-Requires Python ≥ 3.9 and PyTorch ≥ 2.0. A GPU is optional but recommended.
+For development, include the test dependencies:
 
-> **Blackwell (sm_120) GPUs** — RTX PRO 6000 and other Blackwell parts need a
-> CUDA 12.8 build (`pip install torch --index-url
-> https://download.pytorch.org/whl/cu128`). A cu124 build ships kernels only up
-> to sm_90 and fails at runtime with "no kernel image is available".
+```bash
+python -m pip install -e ".[dev]"
+```
+
+> **Blackwell (sm_120) GPUs** — install the CUDA 12.8 PyTorch wheel before the
+> editable package install:
+>
+> ```bash
+> python -m pip install torch --index-url https://download.pytorch.org/whl/cu128
+> python -m pip install -e .
+> ```
+>
+> A cu124 build ships kernels only up to sm_90 and fails at runtime with
+> "no kernel image is available".
+
+Verify the environment before starting a run:
+
+```bash
+python -c "import torch, torchvision, redundancy; print(torch.__version__); print('CUDA:', torch.cuda.is_available())"
+```
 
 ## Quickstart
 
