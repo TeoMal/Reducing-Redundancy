@@ -46,7 +46,6 @@ checkpoints/
 # Plots written by scripts/plot_results.py (which defaults to the CWD).
 # Figures committed on purpose live under assets/; docs/ is ignored wholesale
 # above, so a negation for it would have no effect.
-*.png
 !assets/**/*.png
 
 # Experiment tracking / logs from cluster runs
