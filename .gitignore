@@ -22,7 +22,7 @@ env/
 # Reference documentation, figures and archived per-epoch logs. Local only.
 # Nothing under here can be un-ignored piecemeal: git never descends into an
 # excluded directory, so a `!docs/...` negation below would not fire.
-docs/
+docs/*.md
 
 # Downloaded datasets
 data/
