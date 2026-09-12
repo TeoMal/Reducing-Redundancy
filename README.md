@@ -140,9 +140,7 @@ scripts/
 ├── make_figures.py          # render the figures in this README
 ├── prepare_imagenet.py      # HuggingFace parquet -> ImageFolder
 ├── imagenet_download.sh     # fetch the ImageNet-1k parquet shards
-├── imagenet_convert.sh      # run the conversion end to end
-├── imagenet_fetch.sbatch    # both of the above as a single Slurm job
-└── train_imagenet_vit_b16.sbatch   # Slurm job for the runs above
+└── imagenet_convert.sh      # run the conversion end to end
 tests/smoke_test.py      # fast, download-free end-to-end checks
 ```
 
@@ -217,9 +215,8 @@ Run `python train.py --help` for the full list of options.
 > **Logs are overwritten, not appended.** `CSVLogger` opens its file with mode
 > `w` and the name depends only on dataset/model/method, so a second run of the
 > same configuration — including a job that restarts and resumes — truncates the
-> first one's log. Archive or rename the CSV before re-running;
-> `scripts/train_imagenet_vit_b16.sbatch` does this for you, leaving a
-> timestamped segment per restart to be rejoined afterwards.
+> first one's log. Archive or rename the CSV before re-running, especially on a
+> scheduler that may restart a job mid-run.
 
 Overlay results across runs:
 
