@@ -155,8 +155,8 @@ dataset is a self-contained addition (see [Adding a dataset](#adding-a-dataset))
 Requires Python >= 3.9 and PyTorch >= 2.0. A GPU is optional but recommended.
 
 ```bash
-git clone https://github.com/TeoMal/Achlioptas-Paper.git
-cd Achlioptas-Paper
+git clone https://github.com/TeoMal/Reducing-Redundancy.git
+cd Reducing-Redundancy
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
