@@ -19,9 +19,8 @@ htmlcov/
 venv/
 env/
 
-# Reference documentation, figures and archived per-epoch logs. Local only.
-# Nothing under here can be un-ignored piecemeal: git never descends into an
-# excluded directory, so a `!docs/...` negation below would not fire.
+# Local-only reference notes. The figures and per-epoch logs under docs/ are
+# committed on purpose; only the top-level notes are ignored.
 docs/*.md
 
 # Downloaded datasets
@@ -30,6 +29,7 @@ data/
 # Generated training outputs and artifacts
 outputs/
 runs/
+results/
 *.ckpt
 *.pth
 *.pt
@@ -43,9 +43,7 @@ ckpt/
 checkpoints/
 
 # Plots written by scripts/plot_results.py (which defaults to the CWD).
-# Figures committed on purpose live under assets/; docs/ is ignored wholesale
-# above, so a negation for it would have no effect.
-!assets/**/*.png
+# The figures embedded in the README live under docs/figures/ and are committed.
 
 # Experiment tracking / logs from cluster runs
 wandb/

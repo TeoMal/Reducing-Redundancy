@@ -38,33 +38,6 @@ Four 300-epoch runs, identical in every respect except the selector.
 back-propagating about half the examples. `mean_adaptive` is far more aggressive
 — 30% of examples for 63% of the compute — and pays 5.2 points for it.
 
-### The headline finding: the answer depends on how good your baseline is
-
-We first ran this comparison with an under-regularised recipe (lr 3e-3, 90
-epochs, no label smoothing or dropout), where the baseline reached only 65.6%
-top-1 against 95%+ train accuracy — heavily overfitting. Re-running everything
-with a properly tuned baseline changed the conclusions:
-
-| Method | Δ top-1, under-tuned baseline (65.6%) | Δ top-1, tuned baseline (72.9%) |
-| ------ | -----: | -----: |
-| `topk` k = 0.5        | **−0.01** | **−1.29** |
-| `adaptive_k` f = 2/3  | −3.59 | −1.13 |
-| `mean_adaptive` c = 1 | −2.30 | −5.23 |
-
-Against the weak baseline, `topk` appeared to be **completely free** — 65.63%
-versus 65.64%, a hundredth of a point on half the data. That result does not
-survive a properly trained baseline, where the same method gives up 1.29 points.
-
-The ordering changes too: `adaptive_k` looked like the *worst* selector against
-the weak baseline and is the *best* one against the strong baseline.
-
-The mechanism is straightforward. A baseline that is memorising its training set
-extracts little value from the examples a selector discards, so discarding them
-costs nothing. Strengthen the baseline and those examples start to matter. **A
-selection method benchmarked only against an under-regularised baseline will
-overstate its case** — and the weaker the baseline, the better the method looks.
-We report both regimes rather than only the flattering one.
-
 ### What the selectors actually keep
 
 ![Examples kept and modelled compute](docs/figures/selector_budget.png)
@@ -136,15 +109,9 @@ Swap `--method full` for `--method topk --k 0.5 --selection-mode two_pass` (or
 `128 × 4 GPUs × 2 accum = 1024`; if you have a different GPU count, hold that
 product constant so the learning rate stays valid.
 
-Raw per-epoch logs for every run in both tables are committed under
-[`docs/results/`](docs/results/) — `tuned_300ep/` for the results above and
-`undertuned_90ep/` for the first round they are compared against.
-
-One caveat on the archived logs: the under-tuned baseline's CSV covers epochs
-33–89 only. A stale job restarted mid-run and truncated it (see the logging note
-below). Training itself completed all 90 epochs and its best accuracy fell at
-epoch 86, inside the surviving range, so the 65.64% figure is unaffected — but
-that run's early learning curve is gone. The tuned logs are complete.
+Raw per-epoch logs for all four runs are committed under
+[`docs/results/tuned_300ep/`](docs/results/tuned_300ep/), one complete CSV per
+method.
 
 ---
 
@@ -188,8 +155,8 @@ dataset is a self-contained addition (see [Adding a dataset](#adding-a-dataset))
 Requires Python >= 3.9 and PyTorch >= 2.0. A GPU is optional but recommended.
 
 ```bash
-git clone https://github.com/TeoMal/Reducing-Redundancy.git
-cd Reducing-Redundancy
+git clone https://github.com/TeoMal/Achlioptas-Paper.git
+cd Achlioptas-Paper
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
