@@ -1,0 +1,40 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      # CPU wheels only: the runners have no GPU, and the CUDA builds are
+      # several GB. The smoke test runs entirely on random tensors.
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install torch torchvision \
+            --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -e ".[dev]"
+
+      - name: Smoke test
+        run: pytest tests/smoke_test.py -v
+
+      # The README figures are generated from the CSVs committed under
+      # docs/results/, so this also checks that path keeps working.
+      - name: Figures regenerate from committed results
+        run: python scripts/make_figures.py

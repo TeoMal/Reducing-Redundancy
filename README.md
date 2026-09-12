@@ -1,9 +1,11 @@
 # Reducing Redundancy in Neural Network Training
 
-Code accompanying the BSc thesis **_Reducing Redundancy in Neural Network
-Training_** (Theodoris V. Mallios, supervised by Prof. Dimitrios Achlioptas,
-Department of Informatics and Telecommunications, National and Kapodistrian
-University of Athens, 2025).
+[![tests](https://github.com/TeoMal/Reducing-Redundancy/actions/workflows/ci.yml/badge.svg)](https://github.com/TeoMal/Reducing-Redundancy/actions/workflows/ci.yml)
+
+Code accompanying the BSc thesis **_[Reducing Redundancy in Neural Network
+Training](https://pergamos.lib.uoa.gr/item/uoadl:5304088)_** (Theodoris V.
+Mallios, supervised by Prof. Dimitrios Achlioptas, Department of Informatics and
+Telecommunications, National and Kapodistrian University of Athens, 2025).
 
 Modern training pipelines treat every example and every gradient component
 equally, even though empirical evidence shows that late in training many
@@ -400,9 +402,13 @@ low-rank projection preserves shapes, and the training loop completes an epoch.
   school = {National and Kapodistrian University of Athens},
   year   = {2025},
   type   = {BSc thesis},
+  url    = {https://pergamos.lib.uoa.gr/item/uoadl:5304088},
   note   = {Supervisor: Prof. Dimitrios Achlioptas}
 }
 ```
+
+The same metadata is in [`CITATION.cff`](CITATION.cff), which GitHub reads for
+the "Cite this repository" button.
 
 ## License
 

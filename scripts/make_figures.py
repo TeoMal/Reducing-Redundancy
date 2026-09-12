@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 """Render the paper/README figures from the per-epoch CSV logs.
 
-Reads whichever runs are present under ``outputs/`` and writes PNGs to
-``docs/figures/``. Missing runs are skipped with a warning, so this is safe to
-run while some experiments are still queued.
+Reads the per-epoch CSVs committed under ``docs/results/tuned_300ep/`` and
+writes PNGs to ``docs/figures/``, so the README figures can be regenerated from
+a fresh clone with no training run. Missing runs are skipped with a warning.
 
     python scripts/make_figures.py
+
+Point it at your own runs with ``--results-dir``, e.g. ``--results-dir outputs``
+to plot experiments that are still in progress.
 
 Figures are styled for print: single-column width, no in-figure titles (the
 caption carries them), light rules, and a zoom inset on the accuracy plot --
@@ -15,6 +18,7 @@ pixels tall.
 
 from __future__ import annotations
 
+import argparse
 import os
 
 import matplotlib
@@ -23,6 +27,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 OUT_DIR = "docs/figures"
+
+# The CSVs behind the README figures are committed, so a fresh clone can
+# regenerate them. `--results-dir` rebinds this to plot your own runs instead.
+RESULTS_DIR = "docs/results/tuned_300ep"
 
 # Reference categorical palette, slots 1-4 in fixed order; line charts are the
 # adjacent-pair case this ordering is validated for. Slots 3 and 4 sit below 3:1
@@ -62,10 +70,10 @@ PAPER_RC = {
 # Plain text, not mathtext: "$c{=}1$" swallows the preceding space when
 # matplotlib lays the label out, so the entries render inconsistently.
 SELECTORS = [
-    ("Full (baseline)", "outputs/imagenet_vit_b_16_full.csv", C["blue"]),
-    ("TopK (k = 0.5)", "outputs/imagenet_vit_b_16_topk_two_pass.csv", C["orange"]),
-    ("AdaptiveK (f = 2/3)", "outputs/imagenet_vit_b_16_adaptive_k_two_pass.csv", C["aqua"]),
-    ("MeanAdaptive (c = 1)", "outputs/imagenet_vit_b_16_mean_adaptive_two_pass.csv", C["yellow"]),
+    ("Full (baseline)", "imagenet_vit_b_16_full.csv", C["blue"]),
+    ("TopK (k = 0.5)", "imagenet_vit_b_16_topk_two_pass.csv", C["orange"]),
+    ("AdaptiveK (f = 2/3)", "imagenet_vit_b_16_adaptive_k_two_pass.csv", C["aqua"]),
+    ("MeanAdaptive (c = 1)", "imagenet_vit_b_16_mean_adaptive_two_pass.csv", C["yellow"]),
 ]
 
 
@@ -86,7 +94,8 @@ def style(ax, xlabel, ylabel, grid_axis="both"):
 def load(runs):
     """Return [(label, dataframe, colour)] for the runs whose CSV exists."""
     out = []
-    for label, path, colour in runs:
+    for label, fname, colour in runs:
+        path = os.path.join(RESULTS_DIR, fname)
         if os.path.exists(path):
             out.append((label, pd.read_csv(path), colour))
         else:
@@ -237,6 +246,15 @@ def fig_tradeoff(runs, fname):
 
 
 def main() -> None:
+    global RESULTS_DIR
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument(
+        "--results-dir",
+        default=RESULTS_DIR,
+        help=f"directory holding the per-epoch CSVs (default: {RESULTS_DIR})",
+    )
+    RESULTS_DIR = parser.parse_args().results_dir
+
     os.makedirs(OUT_DIR, exist_ok=True)
     with plt.rc_context(PAPER_RC):
         print("selector accuracy:")

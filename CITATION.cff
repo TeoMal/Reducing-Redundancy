@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you use this software or its results, please cite the thesis below."
+title: "Reducing Redundancy in Neural Network Training"
+abstract: >-
+  A framework for reducing redundant computation in neural network training via
+  loss-based example selection and low-rank gradient approximation, with
+  300-epoch ViT-B/16 results on ImageNet-1k.
+authors:
+  - family-names: Mallios
+    given-names: Theodoris V.
+license: MIT
+repository-code: "https://github.com/TeoMal/Reducing-Redundancy"
+keywords:
+  - deep-learning
+  - training-efficiency
+  - data-selection
+  - gradients
+  - vision-transformer
+preferred-citation:
+  type: thesis
+  title: "Reducing Redundancy in Neural Network Training"
+  authors:
+    - family-names: Mallios
+      given-names: Theodoris V.
+  thesis-type: "BSc thesis"
+  institution:
+    name: "National and Kapodistrian University of Athens"
+  department: "Department of Informatics and Telecommunications"
+  year: 2025
+  url: "https://pergamos.lib.uoa.gr/item/uoadl:5304088"
